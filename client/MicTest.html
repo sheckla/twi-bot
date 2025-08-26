@@ -3,44 +3,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="stylesheet" href="style.css" />
 <title>KI-Pipeline Test</title>
-
-
 <div class="container">
-<h1> KI-Pipeline Test</h1>
-<label>
-  <span>MP3/WAV wählen:</span><br>
-  <input id="file" type="file" accept="audio/*" />
-    <audio id="inputPlayer" controls style="display:block;margin-top:8px;width:60%"></audio>
-  <small id="inputInfo" style="color:#666"></small>
-</label>
-<br><br>
-Bitte Audio auswählen und los gehts.
-<br>
-<button id="clear" onclick="clearAll()">Alles löschen</button>
-<button id="pipeline-start">Frage stellen</button>
-  <h2>1. STT Testen mit Datei</h2>
-  <button id="stt-button">Abschicken!</button>
+  <h1> KI-Pipeline Test Client</h1>
+  Test-Client für die KI-Pipeline mit STT, LLM und TTS.
   <br>
-  <textarea id="transcription" style="width: 60%; height: 100px;" placeholder="Antwort erscheint hier" readonly="true"></textarea>
+  <br>
 
-  <br><br>
-  <h2>2. LLM Testen mit Spracheingabe</h2>
-  <label>
-    <span> LLM/Agenten Frage stellen</span>
-    <input id="question" style="width: 60%;" placeholder="Frage stellen" />
-    <button id ="ask"> Fragen </button>
-  </label>
-  <h3>Antwort:</h3>
-  <textarea id="answer" style="width: 60%; height: 100px;" placeholder="Antwort erscheint hier" readonly="true"></textarea>
+  <div class="section">
+    Bitte Audio auswählen und los gehts.
+    <label>
+      <input id="file" type="file" accept="audio/*" />
+      <audio id="inputPlayer" controls></audio>
+      <small id="inputInfo"></small>
+    </label>
+  </div>
 
-  <br><br>
-  <h2>3. TTS Testen</h2>
-  <input id="tts-text" type="text" placeholder="Text für TTS"/>
-  <button id="tts"> TTS abspielen </button>
-  <audio id="ttsPlayer" controls style="display:block;margin-top:8px;width:60%"></audio>
-  <small id="ttsInfo" style="color:#666"></small>
+  <div class="section">
+    <h2>Controls</h2>
+    <button id="clear" class="delete-button" onclick="clearAll()">Alles löschen</button>
+    <button id="pipeline-start">Frage stellen</button>
+    <br>
+    <div id="loading" class="loading hidden">Lädt...</div>
+    <div id="final-success" class="success hidden">
+      <a id="final-success"></a>
+      Bearbeitungsdauer <a id="total-ms-server"></a><br>
+      Netzwerklatenz <a id="total-ms-network"></a><br>
+      Total <a id="total-ms-total"></a>
+    </div>
+  </div>
+
+
+  <div class="section">
+    <h2>1. STT Testen mit Datei</h2>
+    <button id="stt-button">Abschicken!</button>
+    <br>
+    <div id="stt-success" class="success hidden">
+      <a id="transcription"></a><br><br>
+      Bearbeitungsdauer <a id="transcription-ms-server"></a><br>
+      Netzwerklatenz <a id="transcription-ms-network"></a><br>
+      Total <a id="transcription-ms-total"></a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2. LLM Testen mit Spracheingabe</h2>
+    <label>
+      <span> LLM/Agenten Frage stellen</span>
+      <input id="question" placeholder="Frage stellen" />
+      <button id="ask"> Fragen </button>
+    </label>
+    <div id="llm-success" class="success hidden">
+      <a id="answer"></a><br><br>
+      Bearbeitungsdauer <a id="llm-ms-server"></a><br>
+      Netzwerklatenz <a id="llm-ms-network"></a><br>
+      Total <a id="llm-ms-total"></a>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. TTS Testen</h2>
+    <input id="tts-text" type="text" placeholder="Text für TTS" />
+    <button id="tts"> TTS abspielen </button>
+    <div id="tts-success" class="success hidden">
+      <audio id="ttsPlayer" controls></audio>
+      <small id="ttsInfo" style="color:#666"></small>
+      <br><br>
+      Bearbeitungsdauer <a id="tts-ms-server"></a><br>
+      Netzwerklatenz <a id="tts-ms-network"></a><br>
+      Total <a id="tts-ms-total"></a>
+    </div>
+  </div>
 </div>
 
 <pre id="log" style="white-space:pre-wrap;font:12px/1.4 monospace;"></pre>
 <script src="api.js"></script>
-

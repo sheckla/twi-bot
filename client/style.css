@@ -9,10 +9,88 @@ h2 {
     font-weight: normal;
 }
 
+button {
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    background-color: rgba(255,255,255,0.05);
+    color: white;
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    background-color: rgba(255,255,255,0);
+    color: white;
+    border: 1px solid rgba(255,255,255,0);
+}
+
+audio {
+    display: block;
+    margin-top: 8px;
+    width: 100%;
+}
+
+a {
+    font-weight: normal
+}
+
+@media (max-width: 600px) {
+    .container {
+        max-width: 90% !important;
+    }
+}
+
 .container {
-    max-width: 75%;
+    max-width: 60%;
     margin: auto;
     background-color: rgba(255,255,255,0.1);
     padding: 16px;
     border-radius: 16px;
+}
+
+.section {
+    margin-bottom: 24px;
+    padding: 16px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+}
+
+.delete-button {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.2);
+}
+
+.success {
+    background-color: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.2);
+    padding: 8px;
+    border-radius: 8px;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.loading {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+
+
+.hidden {
+    display: none;
 }
