@@ -7,7 +7,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Accept");
 if (($_SERVER["REQUEST_METHOD"] ?? "GET") === "OPTIONS") { http_response_code(204); exit; }
-
+$startTime = microtime(true);
 
 // Eingabeparameter lesen (GET oder POST)
 $message = $_POST['message'] ?? '';
@@ -56,4 +56,11 @@ if ($res === false) {
 
 // Status durchreichen & Antwort ausgeben
 http_response_code($code ?: 200);
-echo $res;
+$elapsedMs = (int) round((microtime(true) - $startTime) * 1000);
+$decoded = json_decode($res, true);
+echo json_encode(
+    (json_last_error() === JSON_ERROR_NONE && is_array($decoded))
+        ? $decoded + ['ms' => $elapsedMs]
+        : ['ms' => $elapsedMs, 'raw' => $res],
+    JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE
+);

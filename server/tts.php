@@ -20,7 +20,11 @@ $fail = function(int $code, string $msg, array $extra = []) {
 
 // ===== Config =====
 $PIPER_BIN  = '/Library/Frameworks/Python.framework/Versions/3.13/bin/piper';
-$MODEL_ONNX = '/Users/customer/tts/piper/voices/de_DE-thorsten-low.onnx';
+$modelName = "thorsten";
+$modelName = "kerstin";
+$modelQuality = "low";
+//$MODEL_ONNX = '/Users/customer/tts/piper/voices/de_DE-eva_k-x_low.onnx';
+$MODEL_ONNX = '/Users/customer/tts/piper/voices/de_DE-' . $modelName . "-" . $modelQuality . ".onnx";
 $MODEL_JSON = $MODEL_ONNX . '.json';
 $PIPER_EXTRA_FLAGS = [];
 $CWD = dirname($MODEL_ONNX);
@@ -28,7 +32,8 @@ $CWD = dirname($MODEL_ONNX);
 // ===== Input =====
 $raw = file_get_contents('php://input') ?: '';
 $body = json_decode($raw, true);
-$text = trim((string)($body['text'] ?? $_POST['text'] ?? ''));
+$text = $_POST['text'];
+$text = html_entity_decode( strip_tags( $text ) );
 $speaker = trim((string)($body['speaker'] ?? $_POST['speaker'] ?? ''));
 if ($text === '') $fail(400, 'no text provided');
 
@@ -43,7 +48,8 @@ $parts = [
   escapeshellarg($PIPER_BIN),
   '--model', escapeshellarg($MODEL_ONNX),
   '--output_file', escapeshellarg($wavFile),
-  '--text', escapeshellarg($text . '.'),  // kleiner Punkt gegen abgeschnittene Enden
+  '--sentence-silence ', escapeshellarg("0.3"),
+  '', escapeshellarg($text),  // kleiner Punkt gegen abgeschnittene Enden
 ];
 if ($speaker !== '') { $parts[]='--speaker'; $parts[]=escapeshellarg($speaker); }
 foreach ($PIPER_EXTRA_FLAGS as $f) { $parts[] = escapeshellarg((string)$f); }
