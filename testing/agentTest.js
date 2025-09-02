@@ -3,9 +3,9 @@ const fs = require("fs");
 
 // config
 const N_RUNS = 3;
-const LLM_NAME = "DeepSeek-R1-Distill-Qwen-1_5B-Q4_K_M";
+const LLM_NAME = "temp";
 const OUTPUT_FILE = "bot-run-n3-" + LLM_NAME + ".txt";
-const API_URL = "https://one.beezlebug.com/sprachbot/";
+const API_URL = "https://one.beezlebug.com/sprachbot/llm.php";
 
 const QUESTIONS = [
   "Hallo, ich heiße Klaus!",

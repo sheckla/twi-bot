@@ -58,6 +58,8 @@
         <td>
           <div id="final-success" class="answer">
             <a id="loading"></a><br><br>
+            <!-- <p id ="final-transcription"></p> -->
+            <!-- <p id ="final-answer"></p> -->
             <a id="total-ms-server"></a><br>
             <a id="total-ms-network"></a><br>
             <a id="total-ms-total"></a>
@@ -102,7 +104,8 @@
         <th colspan="2">
           <h2>2. Large Language Model
             <a href="https://agent.cybob.com/console/agents/detail/?identifier=33940100-cb19-41dd-b415-e6e82e9c3bd4">Chatbot</a>
-            (Google Gemma3:1b)</h2>
+            (Google Gemma3:1b)
+          </h2>
         </th>
       </tr>
       <tr>
@@ -125,22 +128,33 @@
       <table>
         <tr>
           <th colspan="2">
-            <h2>Text to Speech (Piper)</h2>
+            <h2>Text to Speech</h2>
           </th>
         </tr>
         <tr>
           <td>
-            <input id="tts-text" type="text" placeholder="Text für TTS" /><br>
-            <select id="thorsten-emotion">
-              <option value="0">Fröhlich</option>
-              <option value="1">Wütend</option>
-              <option value="2">Verekelt</option>
-              <option value="3">Betrunken</option>
-              <option value="4">Neutral</option>
-              <option value="5">Schläfrig</option>
-              <option value="6">Überrascht</option>
-              <option value="7">Flüstern</option>
+            <select id="tts-type">
+              <option value="coqui">Coqui TTS (Thorsten)</option>
+              <option value="piper">Piper TTS</option>
             </select>
+            Text
+            <input id="tts-text" type="text" placeholder="Text für TTS" /><br>
+            <div id="piper-options" class="hidden">
+
+              Emotion
+              <select id="thorsten-emotion">
+                <option value="0">Fröhlich</option>
+                <option value="1">Wütend</option>
+                <option value="2">Verekelt</option>
+                <option value="3">Betrunken</option>
+                <option value="4">Neutral</option>
+                <option value="5">Schläfrig</option>
+                <option value="6">Überrascht</option>
+                <option value="7">Flüstern</option>
+              </select>
+              Geschwindigkeit
+              <input id="tts-speed" value="0.95">
+            </div>
             <button id="tts" onclick="startTTS()">→ TTS generieren</button><br>
           </td>
           <td>

@@ -7,22 +7,13 @@ const canvasCtx = canvas?.getContext("2d");
 const fileInput = document.getElementById("file");
 const fileInputPlayer = document.getElementById("inputPlayer");
 const pttButton = document.getElementById('push-to-talk-begin')
+const loadingText = document.getElementById("loading");
+let selectedTypeTTS = "coqui";
 let recorderStream = null, recorder = null, recorderChunks = [], micIsRecording = false;
 let timer = 0;
-
+let llmAnswer = "";
 let animationFrameId = null;
 let pttStartTime = 0;
-
-function formatMs(ms) {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  const millis = Math.floor(ms % 1000);
-  const mm = String(minutes).padStart(2, '0');
-  const ss = String(seconds).padStart(2, '0');
-  const mmm = String(millis).padStart(3, '0');
-  return `${mm}:${ss}.${mmm}`;
-}
-
 
 /* ===== Beezlebug API Class =====
 * - Handles all API requests to the Beezlebug backend
@@ -75,15 +66,23 @@ class BeezlebugApi {
    * Text-To-Speech POST
    * - text: Text to be converted to speech
    *****************************/
-  async tts_POST(text) {
+  async tts_POST_piper(text, emotion, speed) {
     const formData = new FormData();
 
     // 4 = default = neutral
-    let selectedEmotion = document.getElementById("thorsten-emotion").value;
-    formData.append("emotion", selectedEmotion || "4");
-
+    formData.append("emotion", emotion || "4");
+    formData.append("speed", speed);
     formData.append("text", text);
-    const url = this.apiUrl + "/tts.php";
+    const url = this.apiUrl + "/tts-piper.php";
+    const response = await fetch(url, { method: "POST", body: formData });
+    const responseText = await response.text();
+    return JSON.parse(responseText);
+  }
+
+  async tts_POST_coqui(text) {
+    const formData = new FormData();
+    formData.append("text", text);
+    const url = this.apiUrl + "/tts-coqui-hot.php";
     const response = await fetch(url, { method: "POST", body: formData });
     const responseText = await response.text();
     return JSON.parse(responseText);
@@ -141,6 +140,7 @@ async function startLLM() {
     let responseTime = getResponseTime(clientStartTime, response.ms);
 
     // update html
+    llmAnswer = response.reply;
     document.getElementById("llm-processing").classList.remove("processing");
     document.getElementById("llm-success").classList.add("success");
     document.getElementById("llm-text").textContent = response.reply;
@@ -166,13 +166,22 @@ async function startTTS() {
   const text = document.getElementById("tts-text").value.trim();
   if (!text) return alert("Bitte eine Antwort zum Vorlesen eingeben.");
 
+  let selectedEmotion = document.getElementById("thorsten-emotion").value;
+  let selectedSpeed = document.getElementById("tts-speed").value;
+
   clearTTS();
   document.getElementById("tts-success").classList.add("processing");
   const clientStartTime = Date.now();
   try {
-    const response = await beezlebugApi.tts_POST(text);
+    let response;
+    if (selectedTypeTTS === "piper") {
+      console.log("piper");
+      response = await beezlebugApi.tts_POST_piper(text, selectedEmotion, selectedSpeed);
+    } else {
+      console.log("coqui");
+      response = await beezlebugApi.tts_POST_coqui(text);
+    }
     let responseTime = getResponseTime(clientStartTime, response.ms);
-
     // Oops! No response
     if (!response.audio_data_url) {
       return alert("Keine Audiodaten erhalten.");
@@ -209,18 +218,21 @@ async function startPipeline() {
   let times = [];
 
   // STT Step
+  loadingText.textContent = "(wird transkribiert...";
   let ms = await startSTT();
   times.push(ms)
   let transcription = document.getElementById("stt-text").textContent.trim();
   document.getElementById("llm-question").value = transcription;
 
   // LLM Step
+  loadingText.textContent = "(warte auf Antwort...)";
   ms = await startLLM();
   times.push(ms);
   let answer = document.getElementById("llm-text").textContent.trim();
   document.getElementById("tts-text").value = answer;
 
   // TTS Step
+  loadingText.textContent = "(Audio wird generiert...)";
   ms = await startTTS();
   times.push(ms);
 
@@ -245,7 +257,8 @@ async function startPipeline() {
   document.getElementById("total-ms-total").textContent = "Gesamt: " + finalMs.total + " ms";
   document.getElementById("final-success").classList.remove("processing");
   document.getElementById("final-success").classList.add("success");
-  document.getElementById("loading").text = "Anfrage erfolgreich durchgeführt!";
+  // document.getElementById("loading").textContent = "Anfrage erfolgreich durchgeführt!";
+  document.getElementById("loading").textContent = llmAnswer;
 }
 
 /*****************************
@@ -340,15 +353,24 @@ fileInput.addEventListener("change", () => {
   fileInputPlayer.load();
 });
 
+document.getElementById("tts-type").addEventListener("change", () => {
+  selectedTypeTTS = document.getElementById("tts-type").value;
+  if (selectedTypeTTS === "coqui") {
+    document.getElementById("piper-options").classList.add("hidden");
+  } else {
+    document.getElementById("piper-options").classList.remove("hidden");
+  }
+})
+
 /*****************************
  *  Start ms-timer when activating Push-to-Talk
  *****************************/
 async function startTimer() {
   pttStartTime = performance.now();
   function timeStep() {
-    const elapsed = performance.now() - pttStartTime;
+    const elapsed = (performance.now() - pttStartTime) / 1000.0;
     if (micIsRecording) {
-      pttButton.textContent = elapsed / 1000.0 + " s";
+      pttButton.textContent = elapsed.toFixed(1) + " s";
       animationFrameId = requestAnimationFrame(timeStep);
     }
 
@@ -433,7 +455,7 @@ async function recordAudio() {
     clearStreamTracks();
     recorderStream = null;
     micIsRecording = false;
-     pttButton.textContent = "Push-to-Talk";
+    pttButton.textContent = "Push-to-Talk";
   }
 }
 

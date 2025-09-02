@@ -1,0 +1,60 @@
+Sprachbot Test mit temp
+API: https://one.beezlebug.com/sprachbot/llm.php
+Output: bot-run-n3-temp.txt
+Testdurchlauf Anzahl: 3
+Anzahl Fragen: 6
+Frage 1: Hallo, ich heiße Klaus!
+Frage 2: Für wen arbeitest du. Kannst du mir mehr darüber erzählen?
+Frage 3: Ich werde Morgen nächsten Montag meinen ersten Arbeitstag haben. Wann sind die Arbeitszeiten?
+Frage 4: Ok verstanden! Wie funktioniert das Flex-Time System?
+Frage 5: Wenn ich jetzt Montag um 9:00 Uhr kommen würde und dann um 16:00 Uhr gehe, ist das aber kein Problem, oder?
+Frage 6: Ok danke! Bis dann!
+=============================================
+
+==== [Test 1]=====
+[Antwort 1] (0.993s) Hallo Klaus, ich bin Twi-bot, ein KI-Assistent von Cybob Communication GmbH. Ich helfe dir gerne.
+[Antwort 2] (0.834s) Ich bin ein KI-Assistent von Cybob Communication GmbH. Ich unterstütze Projektmanagement, Onboarding und Akquise.
+
+[Ich benötige weitere Informationen, um dir weiterhelfen zu können.]
+[Antwort 3] (2.077s) Die Arbeitszeiten sind 08:00 bis 17:00 Uhr, mit Kernarbeitszeit von 10:00 bis 17:00 Uhr (Mo-Do) und 10:00 bis 15:00 Uhr (Fr).
+[Antwort 4] (1.995s) Das flexible Zeitmanagement ermöglicht Arbeitszeiten zwischen 07:00 und 10:00 Uhr, flexibel zwischen 17:00 Uhr (Mo-Do) und 15:00 Uhr (Fr) oder nach Absprache. Es gibt jedoch eine Abstimmung im Team, um die Arbeitszeit zu koordinieren.
+[Antwort 5] (2.606s) Das ist kein Problem, denn die Arbeitszeiten sind von 08:00 bis 17:00 Uhr, mit Kernarbeitszeit von 10:00 bis 17:00 Uhr (Mo-Do) und 10:00 bis 15:00 Uhr (Fr).
+[Antwort 6] (1.203s) Alles gut, vielen Dank für die Information! Bis später!
+Gesamtlatenz: 9.708s
+
+==== [Test 2]=====
+[Antwort 1] (0.820s) Hallo Klaus, ich bin Twi-bot, ein KI-Assistent von Cybob Communication GmbH.
+
+[]
+[Antwort 2] (0.676s) Ich bin ein KI-Assistent von Cybob Communication GmbH. Ich unterstütze Projektmanagement, Onboarding und Akquise.
+
+[]
+[Antwort 3] (2.048s) Die Arbeitszeiten sind 08:00–17:00 Uhr, mit Kernarbeitszeit 10:00–17:00 Uhr (Mo-Do) und 10:00–15:00 Uhr (Fr).
+[Antwort 4] (1.988s) Das flexible Zeitmanagement ermöglicht flexible Arbeitszeiten zwischen 07:00 und 10:00 Uhr, Mo-Do, und 17:00 Uhr oder nach Absprache/Genehmigung (Fr). Es gibt aber eine Einschränkung: Die tagesmäßige Kernarbeitszeit muss eingehalten werden.
+[Antwort 5] (2.090s) Das ist kein Problem, denn Ihre Ankunftszeit passt perfekt zu den Kernarbeitszeiten.
+[Antwort 6] (1.089s) Alles gut, bis später!
+Gesamtlatenz: 8.711s
+
+==== [Test 3]=====
+[Antwort 1] (0.814s) Hallo Klaus, ich bin Twi-bot, ein KI-Assistent von Cybob Communication GmbH.
+
+[]
+[Antwort 2] (0.522s) Ich bin ein KI-Assistent von Cybob Communication GmbH.
+
+[]
+[Antwort 3] (2.050s) Die Arbeitszeiten sind 08:00 bis 17:00 Uhr, mit Kernarbeitszeit von 10:00 bis 17:00 Uhr (Mo-Do) und 10:00 bis 15:00 Uhr (Fr).
+[Antwort 4] (2.017s) Das flexible Zeitmanagement ermöglicht flexible Arbeitszeiten zwischen 07:00 und 10:00 Uhr, sowie nach Vereinbarung bis 17:00 Uhr (Mo-Do) oder 15:00 Uhr (Fr). Es gibt eine Abstimmung im Team, bei der der Antrag von David oder Jens genehmigt wird.
+[Antwort 5] (2.235s) Das ist kein Problem, denn Ihre Anreise um 9:00 Uhr und Ihre Abreise um 16:00 Uhr passen perfekt zu den Arbeitszeiten.
+[Antwort 6] (1.080s) Alles klar, bis später!
+Gesamtlatenz: 8.718s
+
+===========================
+=== Ergebnis ===
+[Frage 1] durschnittliche Latenz: 0.876
+[Frage 2] durschnittliche Latenz: 0.677
+[Frage 3] durschnittliche Latenz: 2.058
+[Frage 4] durschnittliche Latenz: 2.000
+[Frage 5] durschnittliche Latenz: 2.310
+[Frage 6] durschnittliche Latenz: 1.124
+durschnittliche Latez pro Durchlauf: 9.046 s
+durschnittliche Latenz pro Frage 1.508 s

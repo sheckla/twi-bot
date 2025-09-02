@@ -11,7 +11,6 @@
     --color-button: rgb(132, 118, 196);
     --color-button-dark: rgb(89, 78, 139);
 
-    /* === General Layout === */
     --radius: 8px;
     --spacing: 8px;
     --font-main: "Assistant", sans-serif;
@@ -19,10 +18,9 @@
 
 html {
     color: var(--color-text);
-    /* background: url('background.png') no-repeat center center fixed; */
     background-size: cover;
     background-color: rgb(33,33,33);
-    font-family: "Assistant", sans-serif;
+    font-family: var(--font-main);
 }
 
 button {
@@ -32,7 +30,6 @@ button {
     color: black;
     background-color: var(--color-button);
     border: 1px solid var(--color-white-border);
-    ;
     border-radius: 8px;
     width: 100%;
 }
